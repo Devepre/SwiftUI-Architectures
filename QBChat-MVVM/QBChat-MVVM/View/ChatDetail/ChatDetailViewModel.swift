@@ -22,7 +22,8 @@ class ChatDetailViewModel: ViewModel {
         self.chat = chat
         self.state = ChatDetailState(chat: chat,
                                      currentUser: chatService.currentUser,
-                                     messages: [])
+                                     messages: [],
+                                     text: "")
         self.state.messages = fetchMessages()
     }
 
@@ -35,8 +36,12 @@ class ChatDetailViewModel: ViewModel {
         switch input {
         case .addMessage(let message):
             chatService.addMessage(message, to: chat)
+            self.state.text = ""
             self.state.messages = fetchMessages()
         }
     }
 
+    func forceUpdate(_ newState: ChatDetailState) {
+        state = newState
+    }
 }

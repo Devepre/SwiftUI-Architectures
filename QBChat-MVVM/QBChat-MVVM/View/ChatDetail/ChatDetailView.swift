@@ -12,6 +12,7 @@ struct ChatDetailState {
     var chat: Chat
     var currentUser: String?
     var messages: [Message]
+    var text: String
 }
 
 enum ChatDetailInput {
@@ -26,9 +27,6 @@ struct ChatDetailView: View {
     @EnvironmentObject
     private var keyboardObserver: KeyboardObserver
 
-    @State
-    private var newMessage = ""
-
     var body: some View {
         VStack {
             List(viewModel.messages) { message in
@@ -40,7 +38,7 @@ struct ChatDetailView: View {
             Divider()
 
             HStack {
-                TextField("New message", text: $newMessage, onCommit: sendMessage)
+                TextField("New message", text: viewModel.bind(on: \.text), onCommit: sendMessage)
 
                 Button(action: sendMessage) {
                     Text("Send")
@@ -60,8 +58,7 @@ struct ChatDetailView: View {
 extension ChatDetailView {
 
     private func sendMessage() {
-        viewModel.trigger(.addMessage(newMessage))
-        newMessage = ""
+        viewModel.trigger(.addMessage(viewModel.text))
     }
 
     private func endEditing(force: Bool) {

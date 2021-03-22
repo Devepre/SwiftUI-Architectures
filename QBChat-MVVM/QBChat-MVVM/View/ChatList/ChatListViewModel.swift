@@ -24,4 +24,7 @@ class ChatListViewModel: ViewModel {
 
     }
 
+    func forceUpdate(_ newState: ChatListState) {
+        state = newState
+    }
 }
